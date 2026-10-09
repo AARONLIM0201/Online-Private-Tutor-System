@@ -1,0 +1,35 @@
+{% extends "app/layout.html" %}
+
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/about.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <div class="about-header">
+        <h1>About TutorConnect</h1>
+        <p>Connecting students with the best tutors.</p>
+    </div>
+    <div class="about-content">
+        <!-- {% for account in accounts %}
+        <p>{{ account.date_joined }}</p>
+        {% endfor %} -->
+        <h2>Our Mission</h2>
+        <p>At TutorConnect, our mission is to provide students with access to high-quality tutoring services, helping them achieve their academic goals and excel in their studies.</p>
+        
+        <h2>Our Vision</h2>
+        <p>We envision a world where every student has the opportunity to learn and succeed, regardless of their background or circumstances. Our platform connects students with experienced tutors who are passionate about teaching and making a difference.</p>
+        
+        <h2>Why Choose Us?</h2>
+     
+        <ul>
+            <li>Experienced and qualified tutors</li>
+            <li>Personalized learning plans</li>
+            <li>Flexible scheduling</li>
+            <li>Affordable rates</li>
+            <li>Comprehensive support</li>
+        </ul>
+    </div>
+</div>
+{% endblock %} 

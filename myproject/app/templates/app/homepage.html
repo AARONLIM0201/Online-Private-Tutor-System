@@ -1,0 +1,28 @@
+{% extends "app/layout.html" %}
+
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/homepage.css' %}">
+{% endblock %}
+{% block content %}
+<div class="homepage-container">
+    <!-- Left side: Background image -->
+    <div class="background-image"></div>
+
+    <!-- Right side: Text content -->
+    <div class="homepage-text">
+        {% if request.user.is_authenticated %}
+            <h1>Welcome to TutorConnect, {{ request.user.username }}!</h1>
+            <p>Your Role: {{ request.user.role }}</p>
+            <p>Access your dashboard to manage sessions, assignments, and announcements.</p>
+            <a href="{% url 'account' %}" class="btn">Go to Dashboard</a>
+        {% else %}
+            <h1>Welcome to TutorConnect!</h1>
+            <p>Your gateway to finding the best tutors for academic success.</p>
+            <p>Join our community of students and tutors dedicated to learning and teaching.</p>
+            <a href="{% url 'register' %}" class="btn btn-primary">Get Started</a>
+            <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

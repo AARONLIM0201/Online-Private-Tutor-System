@@ -1,0 +1,74 @@
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate, logout
+from account.forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
+from django.views.decorators.csrf import csrf_protect
+
+# Create your views here.
+@csrf_protect
+def registration_view(request):
+    context = {} 
+    if request.POST: #if the form is submitted
+        form = RegistrationForm(request.POST)
+        if form.is_valid(): #if the form is valid, save the form
+            form.save()
+            email = form.cleaned_data.get('email') #get the email from the form
+            raw_password = form.cleaned_data.get('password1')
+            role = form.cleaned_data.get('role')
+            account = authenticate(email=email, password=raw_password, role=role) #authenticate the user
+            login(request, account)
+            return redirect('home') #redirect to the "menu" page if authentication is successful
+        else:
+            context['registration_form'] = form #if the form is not valid, return the form
+    else:
+        form = RegistrationForm()
+        context['registration_form'] = form
+    return render(request, 'account/register.html', context) 
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+
+
+
+def login_view(request):
+    context = {}
+    user = request.user
+    if user.is_authenticated:
+        return redirect('home')   #redirect to the "menu" page if the user is already authenticated
+    
+                            
+    if request.POST:
+        form = AccountAuthenticationForm(request.POST)
+        if form.is_valid():
+            email = request.POST['email']
+            password = request.POST['password']
+            user = authenticate(email=email, password=password)
+            if user:
+                login(request, user)
+                return redirect('home')
+    else:
+        form = AccountAuthenticationForm()
+    context['login_form'] = form
+    return render(request, 'account/login.html', context)
+
+
+
+
+def account_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    context = {}
+    if request.POST:
+        form = AccountUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+    else:
+        form = AccountUpdateForm(
+            initial = {
+                "email": request.user.email,
+                "username": request.user.username,
+            }
+        )
+    context['account_form'] = form
+    return render(request, 'account/account.html', context)
