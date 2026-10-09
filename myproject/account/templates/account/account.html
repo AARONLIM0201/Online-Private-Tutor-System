@@ -1,0 +1,55 @@
+{% extends "app/layout.html" %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="col-md-8">
+        <section id="loginForm">
+            <form action="." method="post" class="form-horizontal">
+                {% csrf_token %}
+                <h4>Account</h4>
+                <!-- <h6>Welcome back! Please log in to continue.</h6> -->
+                {% for field in account_form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}" class="col-md-2 control-label">{{ field.label }}</label>
+                    <div class="col-md-10">
+                        {{ field }}
+                        {% if field.help_text %}
+                        <small style="color: grey">{{ field.help_text }}</small>
+                        {% endif %}
+
+                {% endfor %}
+
+                {%for field in  account_form%}
+                    {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                {%endfor%}
+         
+
+                {% if  account_form.non_field_errors %}
+                <p style="color: red">{{ login_form.non_field_errors }}</p>
+                {% endif %}
+    
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </div>
+            </form>
+            <div class="forgot-password">
+                <a href="{% url 'password_change' %}">Change Password?</a>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section id="socialLoginForm"></section>
+    </div>
+</div>
+{% endblock %}
+

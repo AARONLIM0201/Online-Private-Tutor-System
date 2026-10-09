@@ -1,0 +1,54 @@
+{% extends "app/layout.html" %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/login.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="col-md-6 offset-md-3">
+<form class="form-signin" method="post">{% csrf_token %}
+    <form>
+      <h1 class="h3 mb-3 fw-normal">Login to your account.</h1>
+      <h6>Welcome back! Please login to continue.</h6>
+        
+      <div class="form-floating">
+        <input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
+       
+      </div>
+      <div class="form-floating">
+        <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+      </div>
+
+
+    {%for field in login_form %}
+          {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+          {% endfor %}
+    {%endfor%}
+
+
+      {% if login_form.non_field_errors %}
+      <div class="error-message">
+          {% for error in login_form.non_field_errors %}
+              <p>{{ error }}</p>
+          {% endfor %}
+      </div>
+      {% endif %}
+    
+      <button class="btn btn-primary w-100 py-2" type="submit">Login</button>
+    </form>
+    <div class="text-center mt-3">
+      <a href="{% url 'password_reset' %}">Forgot Password?</a>
+  </div>
+  </m>
+</div>
+</div>
+
+{% endblock %}
+
